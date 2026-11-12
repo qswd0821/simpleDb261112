@@ -48,6 +48,17 @@ public class Sql {
         return rows.isEmpty() ? null : rows.getFirst();
     }
 
+    public <T> List<T> selectRows(Class<T> cls) {
+        return selectRows().stream()
+                .map(row -> RowMapper.map(row, cls))
+                .toList();
+    }
+
+    public <T> T selectRow(Class<T> cls) {
+        Map<String, Object> row = selectRow();
+        return row == null ? null : RowMapper.map(row, cls);
+    }
+
     public LocalDateTime selectDatetime() {
         return (LocalDateTime) selectValue();
     }
